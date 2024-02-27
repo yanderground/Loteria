@@ -5,11 +5,13 @@ public class Main {
     public static void main(String[] args) {
         List<Integer> jogo = new ArrayList<>();
         jogo.add(13);
-        jogo.add(12);
+        jogo.add(13);
         jogo.add(15);
         jogo.add(21);
         jogo.add(26);
         jogo.add(22);
+
+
 
         Classe loteria = new Classe();
         int tentativas = 0;

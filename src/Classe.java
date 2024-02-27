@@ -1,66 +1,74 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.HashSet;
 
 public class Classe {
+    private static Random random = new Random();
 
     public double loteria(List<Integer> jogo, double premioTotal) {
-        List<Integer> numerosSorteados = sorteiaNumeros();
+        Set<Integer> numerosSorteados = sorteiaNumeros();
         List<Integer> jogoValido = validaJogo(jogo);
         if (jogoValido == null) return 0.0;
 
-        int acertos = jogoSorteado(jogo, jogoValido);
+        int acertos = jogoSorteado(numerosSorteados, jogoValido);
 
-        double premioGanho = calcularPremio(premioTotal, acertos);
-
-        return premioGanho;
+        return calcularPremio(premioTotal, acertos);
     }
-    private static List<Integer> sorteiaNumeros() {
-        List<Integer> numerosSorteados = new ArrayList<>();
-        int s;
+
+    private static Set<Integer> sorteiaNumeros() {
+        Set<Integer> numerosSorteados = new HashSet<>();
         while (numerosSorteados.size() < 6) {
-            s = new Random().nextInt(59) + 1;
-            if (!numerosSorteados.contains(s)) {
-                numerosSorteados.add(s);
+            try {
+                numerosSorteados.add(random.nextInt(59) + 1);
+            } catch (IllegalArgumentException e) {
             }
         }
         return numerosSorteados;
     }
-    private static List<Integer> validaJogo(List<Integer> jogo) {
-        List<Integer> jogoValido = new ArrayList<>();
-        for (Integer n: jogo){
-            if (n < 1 || n > 60){
-                return null;
-            }
-            if (jogoValido.contains(n)){
-                return null;
-            }
-            jogoValido.add(n);
+
+    private List<Integer> validaJogo(List<Integer> jogo) {
+        if (jogo.size() < 6 || jogo.size() > 15) {
+            System.out.println("O jogo deve conter entre 6 e 15 números.");
+            return null;
         }
-        return jogoValido;
+
+        Set<Integer> numeros = new HashSet<>();
+        List<Integer> numerosRepetidos = new ArrayList<>();
+
+        for (Integer n : jogo) {
+            if (n < 1 || n > 60 || numeros.contains(n)) {
+                if (!numerosRepetidos.contains(n)) {
+                    numerosRepetidos.add(n);
+                    System.out.println("Não foi possível adicionar o número " + n + ": número repetido.");
+                }
+            } else {
+                numeros.add(n);
+            }
+        }
+        return new ArrayList<>(numeros);
     }
 
-    private static int jogoSorteado(List<Integer> numerosSorteados, List<Integer> jogoValido) {
+
+    private static int jogoSorteado(Set<Integer> numerosSorteados, List<Integer> jogoValido) {
         int acertos = 0;
-        if (jogoValido.size() >= 6 && jogoValido.size() <= 15) {
-            for (Integer i: jogoValido){
-                if (numerosSorteados.contains(i)){
-                    acertos++;
-                }
+        for (Integer numero : jogoValido) {
+            if (numerosSorteados.contains(numero)) {
+                acertos++;
             }
         }
         return acertos;
     }
 
     private static double calcularPremio(double premioTotal, int acertos) {
-        if (acertos == 6){
+        if (acertos == 6) {
             return premioTotal;
-        } else if (acertos == 5){
+        } else if (acertos == 5) {
             return premioTotal * 0.2;
-        } else if (acertos == 4){
+        } else if (acertos == 4) {
             return premioTotal * 0.05;
         }
         return 0.0;
     }
-
 }
