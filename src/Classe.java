@@ -20,7 +20,7 @@ public class Classe {
         return calcularPremio(premioTotal, acertos);
     }
 
-    private static List<Integer> sorteiaNumeros() {
+    public static List<Integer> sorteiaNumeros() {
         int numero;
         List<Integer> numerosSorteados = new ArrayList<>();
 
@@ -33,7 +33,7 @@ public class Classe {
         return numerosSorteados;
     }
 
-    private List<Integer> validaJogo(List<Integer> jogo) throws Exception {
+    public List<Integer> validaJogo(List<Integer> jogo) throws Exception {
         List<Integer> jogoValido = new ArrayList<>();
 
         if (jogo.size() < 6 || jogo.size() > 15) {
@@ -53,7 +53,7 @@ public class Classe {
     }
 
 
-    private static int jogoSorteado(List<Integer> numerosSorteados, List<Integer> jogoValido) {
+    public static int jogoSorteado(List<Integer> numerosSorteados, List<Integer> jogoValido) {
         int acertos = 0;
         for (Integer numero : jogoValido) {
             if (numerosSorteados.contains(numero)) {
@@ -63,7 +63,7 @@ public class Classe {
         return acertos;
     }
 
-    private static double calcularPremio(double premioTotal, int acertos) {
+    public static double calcularPremio(double premioTotal, int acertos) {
         if (acertos == 6) {
             return premioTotal;
         } else if (acertos == 5) {
